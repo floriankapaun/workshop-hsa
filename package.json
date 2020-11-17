@@ -4,7 +4,7 @@
   "description": "This is the repository for the workshop \"Vom Aah zum Wow\"",
   "main": "index.js",
   "scripts": {
-    "start": "servor . index.html 8080 --reload --browse",
+    "start": "servor . index.html 8280 --reload --browse",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
