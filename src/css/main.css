@@ -4,24 +4,48 @@
 
 :root {
     font-size: 115%;
-    --green: #1db954;
-    --paper: #131313;
-    --ink: #ffffff;
+    --paper: #ffffff;
+    --ink: #ff0000;
 }
 
 body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    min-height: 100vh;
     position: relative;
     font-family: 'Flexa', sans-serif;
     font-size: 2rem;
-    line-height: 1.5;
+    line-height: 1.4;
     font-weight: 400;
     font-style: normal;
-    font-variation-settings: "wdth" 100, "wght" 100; /* "italic" 0 */
+    font-variation-settings: "wdth" 89, "wght" 400; /* "italic" 0 */
     -webkit-font-smoothing: antialiased;
     font-kerning: normal;
     font-feature-settings: "kern" 1, "liga" 1, "onum" 1;
     color: var(--ink);
     background-color: var(--paper);
+    padding: 2rem;
+    margin: 0;
+}
+
+h1 {
+    font-size: inherit;
+    font-variation-settings: "wdth" 89, "wght" 400, "ital" 100;
+    margin-top: 0;
+    font-weight: normal;
+}
+
+.text {
+    white-space: pre-wrap;
+}
+
+.note {
+    font-size: 1rem;
+    line-height: 1.3;
+    font-variation-settings: "wdth" 89, "wght" 200;
+    margin-bottom: 0;
 }
 
 .canvas-wrapper {

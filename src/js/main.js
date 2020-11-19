@@ -4,7 +4,6 @@ const tf = import(/* webpackPreload: true */ '@tensorflow/tfjs-core');
 
 const video = document.getElementById('video');
 const canvas = document.getElementById('output');
-const textContainer = document.getElementById('text');
 
 class HandposeDetection {
     constructor(input, output) {
@@ -70,11 +69,11 @@ class HandposeDetection {
         // Plott the input video as canvas background
         // Clip the image and position the clipped part on the canvas
         // ctx.drawImage(img,sx,sy,swidth,sheight,x,y,width,height)
-        this.ctx.drawImage(
-            this.input,
-            0, 0, this.VIDEO_WIDTH, this.VIDEO_HEIGHT,
-            0, 0, this.output.width, this.output.height,
-        );
+        // this.ctx.drawImage(
+        //     this.input,
+        //     0, 0, this.VIDEO_WIDTH, this.VIDEO_HEIGHT,
+        //     0, 0, this.output.width, this.output.height,
+        // );
         // Plott the prediction onto the context
         if (predictions.length > 0) {
             const firstHand = predictions[0];
@@ -96,22 +95,36 @@ class HandposeDetection {
     }
 }
 
-const printSpannedText = (str) => {
+const printSpannedText = (str, id) => {
     let output = '';
     for (let i = 0; i < str.length; i++) {
         const char = str.substring(i, i+1);
         output += `<span data-index="${i}">${char}</span>`;
     }
-    textContainer.innerHTML = output;
+    document.getElementById(id).innerHTML = output;
 }
 
 const handposeDetection = new HandposeDetection(video, canvas);
 
-handposeDetection.init();
+// handposeDetection.init();
 
-const text = 'It is a technological advancement by humanity in which computers can understand language and perform complex mathematical operations to solve problems. Artificial intelligence is the most important challenge in the modern era, with the goal to replace human workers with machines and create new productive and intelligent jobs. A robot uses sophisticated neural networks, computer algorithms, deep learning, deep learning, to process different information and then create different products.';
+const text = `It is a technological advancement by humanity in 
+which computers can understand language and 
+perform complex mathematical operations to 
+solve problems.`;
+const text2 = `Artificial intelligence is the most important 
+challenge in the modern era, with the goal to 
+replace human workers with machines and create 
+new productive and intelligent jobs.`;
 
-printSpannedText(text);
+const text3 = `A robot uses sophisticated neural networks, 
+computer algorithms, deep learning, deep 
+learning, to process different information and 
+then create different products.`;
+
+printSpannedText(text, 'text');
+printSpannedText(text2, 'text2');
+printSpannedText(text3, 'text3');
 
 const getDistanceToPointer = (elem, pointer) => {
     const elemX = elem.offsetLeft + (elem.offsetWidth / 2);
@@ -127,18 +140,20 @@ const spans = document.getElementsByTagName('SPAN');
 const adjustFontPropertyFromDistance = (pointer) => {
     // for (const span of spans) {
     //     const distance = getDistanceToPointer(span, pointer);
-    //     span.style.fontVariationSettings = `"wdth" 100, "wght" ${distance}`;
-    //     // font-variation-settings: "wdth" 100, "wght" 400
+    //     span.style.fontVariationSettings = `"wdth" 89, "wght" ${distance}`;
+    //     // font-variation-settings: "wdth" 89, "wght" 400
     // }
     const pointedElement = document.elementFromPoint(pointer[0], pointer[1]);
     const indexOfPointedElement = parseInt(pointedElement.dataset.index);
     if (!indexOfPointedElement) return false;
     for (const span of spans) {
-        span.style.fontVariationSettings = '"wdth" 100, "wght" 100';
+        span.style.fontVariationSettings = '"wdth" 89, "wght" 180';
     }
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 9; i++) {
         const wght = 900 / (i/2 + 1);
-        spans[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" 100, "wght" ${wght}`;
-        spans[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" 100, "wght" ${wght}`;
+        spans[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" 89, "wght" ${wght}`;
+        spans[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" 89, "wght" ${wght}`;
+        spans[indexOfPointedElement + i].style.color = '#0000ff';
+        spans[indexOfPointedElement - i].style.color = '#0000ff';
     }
 };
