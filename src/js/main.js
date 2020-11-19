@@ -88,7 +88,7 @@ class HandposeDetection {
                 this.VIDEO_WIDTH - pointer[0],
                 pointer[1],
             ];
-            console.log(getDistanceToPointer(span, mirroredPointer));
+            adjustFontPropertyFromDistance(mirroredPointer);
             this.ctx.fill();
         }
         // Render the next prediction
@@ -100,7 +100,7 @@ const printSpannedText = (str) => {
     let output = '';
     for (let i = 0; i < str.length; i++) {
         const char = str.substring(i, i+1);
-        output += `<span>${char}</span>`;
+        output += `<span data-index="${i}">${char}</span>`;
     }
     textContainer.innerHTML = output;
 }
@@ -122,4 +122,23 @@ const getDistanceToPointer = (elem, pointer) => {
     return dist;
 }
 
-const span = document.getElementsByTagName('span')[0];
+const spans = document.getElementsByTagName('SPAN');
+
+const adjustFontPropertyFromDistance = (pointer) => {
+    // for (const span of spans) {
+    //     const distance = getDistanceToPointer(span, pointer);
+    //     span.style.fontVariationSettings = `"wdth" 100, "wght" ${distance}`;
+    //     // font-variation-settings: "wdth" 100, "wght" 400
+    // }
+    const pointedElement = document.elementFromPoint(pointer[0], pointer[1]);
+    const indexOfPointedElement = parseInt(pointedElement.dataset.index);
+    if (!indexOfPointedElement) return false;
+    for (const span of spans) {
+        span.style.fontVariationSettings = '"wdth" 100, "wght" 100';
+    }
+    for (let i = 0; i < 8; i++) {
+        const wght = 900 / (i/2 + 1);
+        spans[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" 100, "wght" ${wght}`;
+        spans[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" 100, "wght" ${wght}`;
+    }
+};

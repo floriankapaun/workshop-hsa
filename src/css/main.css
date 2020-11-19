@@ -16,7 +16,7 @@ body {
     line-height: 1.5;
     font-weight: 400;
     font-style: normal;
-    font-variation-settings: "wdth" 100, "wght" 400; /* "italic" 0 */
+    font-variation-settings: "wdth" 100, "wght" 100; /* "italic" 0 */
     -webkit-font-smoothing: antialiased;
     font-kerning: normal;
     font-feature-settings: "kern" 1, "liga" 1, "onum" 1;
