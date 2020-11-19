@@ -84,6 +84,11 @@ class HandposeDetection {
             const pointer = firstHand.annotations.indexFinger[3];
             this.ctx.beginPath();
             this.ctx.arc(pointer[0], pointer[1], 10 /* radius */, 0, 2 * Math.PI);
+            const mirroredPointer = [
+                this.VIDEO_WIDTH - pointer[0],
+                pointer[1],
+            ];
+            console.log(getDistanceToPointer(span, mirroredPointer));
             this.ctx.fill();
         }
         // Render the next prediction
@@ -107,3 +112,14 @@ handposeDetection.init();
 const text = 'It is a technological advancement by humanity in which computers can understand language and perform complex mathematical operations to solve problems. Artificial intelligence is the most important challenge in the modern era, with the goal to replace human workers with machines and create new productive and intelligent jobs. A robot uses sophisticated neural networks, computer algorithms, deep learning, deep learning, to process different information and then create different products.';
 
 printSpannedText(text);
+
+const getDistanceToPointer = (elem, pointer) => {
+    const elemX = elem.offsetLeft + (elem.offsetWidth / 2);
+    const elemY = elem.offsetTop + (elem.offsetHeight / 2);
+    const pointerX = pointer[0];
+    const pointerY = pointer[1];
+    const dist = Math.sqrt( Math.pow((elemX-pointerX), 2) + Math.pow((elemY-pointerY), 2) );
+    return dist;
+}
+
+const span = document.getElementsByTagName('span')[0];
