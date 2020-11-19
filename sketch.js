@@ -22,7 +22,8 @@ function draw(){
     translate(width, 0);
     scale(-1, 1);
     image(video, 0, 0, width, height);
-    drawPoints();   
+    // drawPoints();
+    drawPointer();
 };
 
 
@@ -32,9 +33,9 @@ const modelLoaded = () => {
 };
 
 const drawPoints = () => {
+  if (!predictions.length) return false;
   fill(0, 255, 0);
   noStroke();
-  if (!predictions.length) return false;
   for (const hand of predictions) {
     /**
      * hand = {
@@ -62,4 +63,16 @@ const drawPoints = () => {
       ellipse(keypoint[0], keypoint[1], 10, 10);
     }
   }
+};
+
+const drawPointer = () => {
+  if (!predictions.length) return false;
+  fill(0, 255, 255);
+  noStroke();
+  // Only take one detected hand
+  const hand = predictions[0];
+  if (!hand.annotations && !hand.annotations.indexFinger && !hand.annotations.indexFinger.length) return false;
+  const { indexFinger } = hand.annotations;
+  const pointer = indexFinger[3];
+  ellipse(pointer[0], pointer[1], 10, 10);
 };
