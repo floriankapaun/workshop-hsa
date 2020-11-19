@@ -151,21 +151,28 @@ const adjustFontPropertyFromDistance = (pointer) => {
     // }
     const pointedElement = document.elementFromPoint(pointer[0], pointer[1]);
     const indexOfPointedElement = parseInt(pointedElement.dataset.index);
-    if (!indexOfPointedElement) return false;
     for (const span of spans) {
-        span.style.fontVariationSettings = '"wdth" 89, "wght" 400';
+        span.style.fontVariationSettings = '"wdth" 89, "wght" 400, "ital" 0';
     }
+    if (!indexOfPointedElement) return false;
     for (let i = 0; i < 9; i++) {
         if (pointedElement.parentNode.id === 'text') {
+            const spansOfThisParagraph = document.getElementById('text').getElementsByTagName('SPAN');
             const wght = 400 + (500 / (i/2 + 1));
-            spans[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" 89, "wght" ${wght}`;
-            spans[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" 89, "wght" ${wght}`;
+            spansOfThisParagraph[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" 89, "wght" ${wght}, "ital" 0`;
+            spansOfThisParagraph[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" 89, "wght" ${wght}, "ital" 0`;
         } else if (pointedElement.parentNode.id === 'text2') {
+            const spansOfThisParagraph = document.getElementById('text2').getElementsByTagName('SPAN');
             const italic = 100 / (i/2 + 1);
-            spans[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" 89, "wght" 400, "ital" ${italic}`;
-            spans[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" 89, "wght" 400, "ital" ${italic}`;
+            console.log(italic);
+            spansOfThisParagraph[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" 89, "wght" 400, "ital" ${italic}`;
+            spansOfThisParagraph[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" 89, "wght" 400, "ital" ${italic}`;
         } else if (pointedElement.parentNode.id === 'text3') {
-
+            const spansOfThisParagraph = document.getElementById('text3').getElementsByTagName('SPAN');
+            const width = 200 / (i/2 + 1);
+            console.log(width);
+            spansOfThisParagraph[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" ${width}, "wght" 400, "ital" 0`;
+            spansOfThisParagraph[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" ${width}, "wght" 400, "ital" 0`;
         }
     }
 };
