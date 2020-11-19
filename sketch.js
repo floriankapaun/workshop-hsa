@@ -1,47 +1,65 @@
-let dcgan;
+// Global variables
+let video;
+let handpose;
+let predictions = [];
 
-// vector 1
-const a = [];
-// vector 2
-const b = [];
-// vector to interpolate between 1 and 2
-const c = [];
-
-let slider;
-
-function preload() {
-  dcgan = ml5.DCGAN('model/face/manifest.json');
-}
-
+// Standard p5 structure
 function setup() {
-  createCanvas(300, 300);
+  createCanvas(640, 480);
+  video = createCapture(VIDEO);
+  video.size(width, height);
+  // Create a new handpose method
+  handpose = ml5.handpose(video, modelLoaded);
+  handpose.on('predict', (results) => {
+    predictions = results;
+  });
+  video.hide();
+};
 
-  // create 2 arrays to hold random values for our latent vector
-  for (let i = 0; i < 128; i += 1) {
-    a[i] = random(-1, 1);
-    b[i] = random(-1, 1);
+
+function draw(){
+    background(255);
+    translate(width, 0);
+    scale(-1, 1);
+    image(video, 0, 0, width, height);
+    drawPoints();   
+};
+
+
+// Custom functions
+const modelLoaded = () => {
+  console.log('Model successfully loaded');
+};
+
+const drawPoints = () => {
+  fill(0, 255, 0);
+  noStroke();
+  if (!predictions.length) return false;
+  for (const hand of predictions) {
+    /**
+     * hand = {
+     *   annotations: {
+     *     indexFinger: [...indexFingerLandmarks],
+     *     middleFinger: [...],
+     *     palmBase: [...],
+     *     pinky: [...],
+     *     ringFinger: [...],
+     *     thumb: [...],
+     *   },
+     *   boundingBox: {
+     *     topLeft: [x, y],
+     *     bottomRight: [x, y],
+     *   },
+     *   handInViewConfidence: Integer, // between 0 and 1
+     *   landmarks: [
+     *     [x, y, z],
+     *     ...
+     *   ],
+     * }
+     */
+    if (!hand.landmarks) return false;
+    for (const keypoint of hand.landmarks) {
+      ellipse(keypoint[0], keypoint[1], 10, 10);
+    }
   }
-  slider = createSlider(0, 1, 0.5, 0.01);
-  slider.input(generate);
-
-  // generate an image on load
-  generate();
-}
-
-
-function generate() {
-  const amt = slider.value();
-  // fill the latent vector with the interpolation between a and b
-  for (let i = 0; i < 128; i += 1) {
-    c[i] = lerp(a[i], b[i], amt);
-  }
-  dcgan.generate(displayImage, c);
-}
-
-function displayImage(err, result) {
-  if (err) {
-    console.log(err);
-    return;
-  }
-  image(result.image, 0, 0, width, height);
-}
+};
