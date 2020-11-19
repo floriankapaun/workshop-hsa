@@ -105,3 +105,6 @@ dist
 
 # MacOS
 .DS_Store
+
+# Prevent font files from getting into the web
+public

@@ -1,3 +1,5 @@
+@import url('../fonts/flexa.css');
+
 * { box-sizing: border-box; }
 
 :root {
@@ -9,9 +11,16 @@
 
 body {
     position: relative;
-    font-family: sans-serif;
+    font-family: 'Flexa', sans-serif;
     font-size: 1rem;
     line-height: 1.5;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings: "wdth" 100, "wght" 400, "italic" 0;
+    -webkit-font-smoothing: antialiased;
+    font-kerning: normal;
+    font-size: 16px;
+    font-feature-settings: "kern" 1, "liga" 1, "onum" 1;
     color: var(--ink);
     background-color: var(--paper);
 }
