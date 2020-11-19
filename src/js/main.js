@@ -7,11 +7,13 @@ const canvas = document.getElementById('output');
 
 class HandposeDetection {
     constructor(input, output) {
-        this.VIDEO_WIDTH = window.innerWidth;
-        this.VIDEO_HEIGHT = window.innerHeight;
+        this.WINDOW_WIDTH = window.innerWidth;
+        this.WINDOW_HEIGHT = window.innerHeight;
         this.TF_BACKEND = 'webgl';
         this.input = input;
         this.output = output;
+        this.videoWidth = undefined;
+        this.videoHeight = undefined;
         this.model = undefined;
         this.ctx = undefined;
     }
@@ -23,11 +25,11 @@ class HandposeDetection {
         await this.setupCamera();
         // Play video
         this.input.play();
-        this.input.width = this.VIDEO_WIDTH;
-        this.input.height = this.VIDEO_HEIGHT;
+        this.input.width = this.WINDOW_WIDTH;
+        this.input.height = this.WINDOW_HEIGHT;
         // Style canvas
-        this.output.width = this.VIDEO_WIDTH;
-        this.output.height = this.VIDEO_HEIGHT;
+        this.output.width = this.WINDOW_WIDTH;
+        this.output.height = this.WINDOW_HEIGHT;
         // NECESSARY?
         // const canvasContainer = document.querySelector('.canvas-wrapper');
         // canvasContainer.style = `width: ${videoWidth}px; height: ${videoHeight}px`;
@@ -48,10 +50,14 @@ class HandposeDetection {
             audio: false,
             video: {
                 facingMode: 'user',
-                width: this.VIDEO_WIDTH,
-                height: this.VIDEO_HEIGHT,
+                width: this.WINDOW_WIDTH,
+                height: this.WINDOW_HEIGHT,
             },
         });
+        let { width, height } = stream.getTracks()[0].getSettings();
+        this.videoWidth = width;
+        this.videoHeight = height;
+
         // Set input source to created stream
         this.input.srcObject = stream;
         // Return promise that resolves if video is loaded
@@ -69,11 +75,11 @@ class HandposeDetection {
         // Plott the input video as canvas background
         // Clip the image and position the clipped part on the canvas
         // ctx.drawImage(img,sx,sy,swidth,sheight,x,y,width,height)
-        // this.ctx.drawImage(
-        //     this.input,
-        //     0, 0, this.VIDEO_WIDTH, this.VIDEO_HEIGHT,
-        //     0, 0, this.output.width, this.output.height,
-        // );
+        this.ctx.drawImage(
+            this.input,
+            this.videoWidth - this.WINDOW_WIDTH, 0, this.WINDOW_WIDTH, this.WINDOW_HEIGHT,
+            0, 0, this.output.width, this.output.height,
+        );
         // Plott the prediction onto the context
         if (predictions.length > 0) {
             const firstHand = predictions[0];
@@ -82,9 +88,9 @@ class HandposeDetection {
                 && !firstHand.annotations.indexFinger.length) return false;
             const pointer = firstHand.annotations.indexFinger[3];
             this.ctx.beginPath();
-            this.ctx.arc(pointer[0], pointer[1], 10 /* radius */, 0, 2 * Math.PI);
+            this.ctx.arc(pointer[0] - (this.videoWidth - this.WINDOW_WIDTH), pointer[1], 10 /* radius */, 0, 2 * Math.PI);
             const mirroredPointer = [
-                this.VIDEO_WIDTH - pointer[0],
+                this.WINDOW_WIDTH - pointer[0] + (this.videoWidth - this.WINDOW_WIDTH),
                 pointer[1],
             ];
             adjustFontPropertyFromDistance(mirroredPointer);
@@ -106,7 +112,7 @@ const printSpannedText = (str, id) => {
 
 const handposeDetection = new HandposeDetection(video, canvas);
 
-// handposeDetection.init();
+handposeDetection.init();
 
 const text = `It is a technological advancement by humanity in 
 which computers can understand language and 
@@ -147,13 +153,19 @@ const adjustFontPropertyFromDistance = (pointer) => {
     const indexOfPointedElement = parseInt(pointedElement.dataset.index);
     if (!indexOfPointedElement) return false;
     for (const span of spans) {
-        span.style.fontVariationSettings = '"wdth" 89, "wght" 180';
+        span.style.fontVariationSettings = '"wdth" 89, "wght" 400';
     }
     for (let i = 0; i < 9; i++) {
-        const wght = 900 / (i/2 + 1);
-        spans[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" 89, "wght" ${wght}`;
-        spans[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" 89, "wght" ${wght}`;
-        spans[indexOfPointedElement + i].style.color = '#0000ff';
-        spans[indexOfPointedElement - i].style.color = '#0000ff';
+        if (pointedElement.parentNode.id === 'text') {
+            const wght = 400 + (500 / (i/2 + 1));
+            spans[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" 89, "wght" ${wght}`;
+            spans[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" 89, "wght" ${wght}`;
+        } else if (pointedElement.parentNode.id === 'text2') {
+            const italic = 100 / (i/2 + 1);
+            spans[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" 89, "wght" 400, "ital" ${italic}`;
+            spans[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" 89, "wght" 400, "ital" ${italic}`;
+        } else if (pointedElement.parentNode.id === 'text3') {
+
+        }
     }
 };
