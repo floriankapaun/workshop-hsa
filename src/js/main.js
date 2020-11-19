@@ -4,8 +4,8 @@ const tf = import(/* webpackPreload: true */ '@tensorflow/tfjs-core');
 
 class HandposeDetection {
     constructor(input, output) {
-        this.VIDEO_WIDTH = 500;
-        this.VIDEO_HEIGHT = this.VIDEO_WIDTH;
+        this.VIDEO_WIDTH = window.innerWidth;
+        this.VIDEO_HEIGHT = window.innerHeight;
         this.TF_BACKEND = 'webgl';
         this.input = input;
         this.output = output;
