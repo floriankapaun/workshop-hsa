@@ -2,6 +2,10 @@ const handpose = import(/* webpackPreload: true */ '@tensorflow-models/handpose'
 const tfjsBackendWebgl = import(/* webpackPreload: true */ '@tensorflow/tfjs-backend-webgl');
 const tf = import(/* webpackPreload: true */ '@tensorflow/tfjs-core');
 
+const video = document.getElementById('video');
+const canvas = document.getElementById('output');
+const textContainer = document.getElementById('text');
+
 class HandposeDetection {
     constructor(input, output) {
         this.VIDEO_WIDTH = window.innerWidth;
@@ -87,9 +91,19 @@ class HandposeDetection {
     }
 }
 
-const video = document.getElementById('video');
-const canvas = document.getElementById('output');
+const printSpannedText = (str) => {
+    let output = '';
+    for (let i = 0; i < str.length; i++) {
+        const char = str.substring(i, i+1);
+        output += `<span>${char}</span>`;
+    }
+    textContainer.innerHTML = output;
+}
 
 const handposeDetection = new HandposeDetection(video, canvas);
 
 handposeDetection.init();
+
+const text = 'It is a technological advancement by humanity in which computers can understand language and perform complex mathematical operations to solve problems. Artificial intelligence is the most important challenge in the modern era, with the goal to replace human workers with machines and create new productive and intelligent jobs. A robot uses sophisticated neural networks, computer algorithms, deep learning, deep learning, to process different information and then create different products.';
+
+printSpannedText(text);
