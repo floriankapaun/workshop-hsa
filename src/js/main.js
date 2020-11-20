@@ -140,97 +140,30 @@ class HandposeDetection {
     }
 }
 
-const printSpannedText = (str, id) => {
-    let output = '';
-    for (let i = 0; i < str.length; i++) {
-        const char = str.substring(i, i+1);
-        output += `<span data-index="${i}">${char}</span>`;
-    }
-    document.getElementById(id).innerHTML = output;
-}
-
 const handposeDetection = new HandposeDetection(video, canvas);
 
 handposeDetection.init();
 
-const text = `It is a technological advancement by humanity in 
-which computers can understand language and 
-perform complex mathematical operations to 
-solve problems.`;
-const text2 = `Artificial intelligence is the most important 
-challenge in the modern era, with the goal to 
-replace human workers with machines and create 
-new productive and intelligent jobs.`;
-
-const text3 = `A robot uses sophisticated neural networks, 
-computer algorithms, deep learning, deep 
-learning, to process different information and 
-then create different products.`;
-
-printSpannedText(text, 'text');
-printSpannedText(text2, 'text2');
-printSpannedText(text3, 'text3');
-
-const getDistanceToPointer = (elem, pointer) => {
-    const elemX = elem.offsetLeft + (elem.offsetWidth / 2);
-    const elemY = elem.offsetTop + (elem.offsetHeight / 2);
-    const pointerX = pointer[0];
-    const pointerY = pointer[1];
-    const dist = Math.sqrt( Math.pow((elemX-pointerX), 2) + Math.pow((elemY-pointerY), 2) );
-    return dist;
+const hightlights = {
+    wide: document.getElementsByClassName('wide'),
+    heavy: document.getElementsByClassName('heavy'),
+    italic: document.getElementsByClassName('italic'),
 }
 
-const spans = document.getElementsByTagName('SPAN');
-
 const adjustFontPropertyFromDistance = (pointer) => {
-    // for (const span of spans) {
-    //     const distance = getDistanceToPointer(span, pointer);
-    //     span.style.fontVariationSettings = `"wdth" 89, "wght" ${distance}`;
-    //     // font-variation-settings: "wdth" 89, "wght" 400
-    // }
+    // Get the element pointed on
     const pointedElement = document.elementFromPoint(pointer[0], pointer[1]);
     if (!pointedElement) return false;
-    const indexOfPointedElement = parseInt(pointedElement.dataset.index);
-    for (const span of spans) {
-        span.style.fontVariationSettings = '"wdth" 89, "wght" 400, "ital" 0';
-        span.style.fontSize = '2rem';
-    }
-    if (!indexOfPointedElement) return false;
-    for (let i = 0; i < 9; i++) {
-        if (pointedElement.parentNode.id === 'text') {
-            const spansOfThisParagraph = document.getElementById('text').getElementsByTagName('SPAN');
-            const wght = 400 + (500 / (i/2 + 1));
-            if (spansOfThisParagraph[indexOfPointedElement + i]) {
-                spansOfThisParagraph[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" 89, "wght" ${wght}, "ital" 0`;
-            }
-            if (spansOfThisParagraph[indexOfPointedElement - i]) {
-                spansOfThisParagraph[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" 89, "wght" ${wght}, "ital" 0`;
-            }
-        } else if (pointedElement.parentNode.id === 'text2') {
-            const spansOfThisParagraph = document.getElementById('text2').getElementsByTagName('SPAN');
-            const italic = 100 / (i/2 + 1);
-            const fontSize = 1 + 4 / (i/2 + 1);
-            if (spansOfThisParagraph[indexOfPointedElement + i]) {
-                spansOfThisParagraph[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" 89, "wght" 400, "ital" ${italic}`;
-                spansOfThisParagraph[indexOfPointedElement + i].style.fontSize = `${fontSize}em`;
-            }
-            if (spansOfThisParagraph[indexOfPointedElement - i]) {
-                spansOfThisParagraph[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" 89, "wght" 400, "ital" ${italic}`;
-                spansOfThisParagraph[indexOfPointedElement - i].style.fontSize = `${fontSize}em`;
-            }
-        } else if (pointedElement.parentNode.id === 'text3') {
-            const spansOfThisParagraph = document.getElementById('text3').getElementsByTagName('SPAN');
-            const width = 200 / (i/5 + 1);
-            const fontSize = 1 + 3 / (i/2 + 1);
-            if (spansOfThisParagraph[indexOfPointedElement + i]) {
-                spansOfThisParagraph[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" ${width}, "wght" 400, "ital" 0`;
-                spansOfThisParagraph[indexOfPointedElement + i].style.fontSize = `${fontSize}em`;
-                spansOfThisParagraph[indexOfPointedElement + i].style.transform = `scale(${fontSize})`;
-            }
-            if (spansOfThisParagraph[indexOfPointedElement - i]) {
-                spansOfThisParagraph[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" ${width}, "wght" 400, "ital" 0`;
-                spansOfThisParagraph[indexOfPointedElement - i].style.transform = `scale(${fontSize})`;
-            }
+    if (pointedElement.classList.contains('highlighted')) return false;
+    // Highlight the pointedElement
+    if (pointedElement.classList.contains('wide')
+        || pointedElement.classList.contains('heavy')
+        || pointedElement.classList.contains('italic')) {
+        pointedElement.classList.add('highlighted');
+    } else {
+        const elems = document.getElementsByClassName('highlighted');
+        for (const elem of elems) {
+            elem.classList.remove('highlighted');
         }
     }
 };
