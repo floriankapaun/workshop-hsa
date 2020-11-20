@@ -50,7 +50,7 @@ class HandposeDetection {
         this.ctx = this.output.getContext('2d');
         this.ctx.translate(this.output.width, 0);
         this.ctx.scale(-1, 1);
-        this.ctx.fillStyle = '#00ff00';
+        this.ctx.fillStyle = '#CCCCCC';
         // Setup tensorflow.js handpose model
         this.model = await (await handpose).load();
         // Start making predictions
@@ -190,6 +190,8 @@ const adjustFontPropertyFromDistance = (pointer) => {
     const indexOfPointedElement = parseInt(pointedElement.dataset.index);
     for (const span of spans) {
         span.style.fontVariationSettings = '"wdth" 89, "wght" 400, "ital" 0';
+        span.style.fontSize = '2rem';
+        span.style.lineHeight = '2.8rem';
     }
     if (!indexOfPointedElement) return false;
     for (let i = 0; i < 9; i++) {
@@ -205,20 +207,29 @@ const adjustFontPropertyFromDistance = (pointer) => {
         } else if (pointedElement.parentNode.id === 'text2') {
             const spansOfThisParagraph = document.getElementById('text2').getElementsByTagName('SPAN');
             const italic = 100 / (i/2 + 1);
+            const fontSize = 1 + 4 / (i/2 + 1);
             if (spansOfThisParagraph[indexOfPointedElement + i]) {
                 spansOfThisParagraph[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" 89, "wght" 400, "ital" ${italic}`;
+                spansOfThisParagraph[indexOfPointedElement + i].style.fontSize = `${fontSize}em`;
             }
             if (spansOfThisParagraph[indexOfPointedElement - i]) {
                 spansOfThisParagraph[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" 89, "wght" 400, "ital" ${italic}`;
+                spansOfThisParagraph[indexOfPointedElement - i].style.fontSize = `${fontSize}em`;
             }
         } else if (pointedElement.parentNode.id === 'text3') {
             const spansOfThisParagraph = document.getElementById('text3').getElementsByTagName('SPAN');
-            const width = 200 / (i/2 + 1);
+            const width = 200 / (i/5 + 1);
+            // const wght = 400 + (200 / (i/2 + 1));
+            const fontSize = 1 + 3 / (i/2 + 1);
             if (spansOfThisParagraph[indexOfPointedElement + i]) {
                 spansOfThisParagraph[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" ${width}, "wght" 400, "ital" 0`;
+                spansOfThisParagraph[indexOfPointedElement + i].style.fontSize = `${fontSize}em`;
+                spansOfThisParagraph[indexOfPointedElement + i].style.lineHeight = `${fontSize}em`;
             }
             if (spansOfThisParagraph[indexOfPointedElement - i]) {
                 spansOfThisParagraph[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" ${width}, "wght" 400, "ital" 0`;
+                spansOfThisParagraph[indexOfPointedElement - i].style.fontSize = `${fontSize}em`;
+                spansOfThisParagraph[indexOfPointedElement - i].style.lineHeight = `${fontSize}em`;
             }
         }
     }
