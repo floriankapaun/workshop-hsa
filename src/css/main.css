@@ -21,13 +21,14 @@ body {
     line-height: 1.2em;
     font-weight: 400;
     font-style: normal;
-    font-variation-settings: "wdth" 89, "wght" 160; /* "italic" 0 */
+    font-variation-settings: "wdth" 89, "wght" 160, "ital" 0;
     -webkit-font-smoothing: antialiased;
     font-kerning: normal;
     font-feature-settings: "kern" 1, "liga" 1, "onum" 1;
     color: var(--ink);
     background-color: var(--paper);
     padding: 2rem 2.3rem;
+    padding: 5vw 6vw;
     margin: 0;
 }
 
@@ -56,47 +57,6 @@ h1 {
     max-width: 25ch;
 }
 
-.wide.highlighted {
-    animation: wide 500ms ease-in-out forwards;
-}
-
-@keyframes wide {
-    0% {
-        font-variation-settings: "wdth" 89, "wght" 400, "ital" 0;
-    }
-    100% {
-        font-variation-settings: "wdth" 200, "wght" 400, "ital" 0;
-    }
-}
-
-.heavy.highlighted,
-.heavy:hover,
-.heavy:focus {
-    animation: heavy 500ms forwards;
-}
-
-@keyframes heavy {
-    0% {
-        font-variation-settings: "wdth" 89, "wght" 400, "ital" 0;
-    }
-    100% {
-        font-variation-settings: "wdth" 89, "wght" 900, "ital" 0;
-    }
-}
-
-.italic.highlighted {
-    animation: italic 500ms ease-in-out forwards;
-}
-
-@keyframes italic {
-    0% {
-        font-variation-settings: "wdth" 89, "wght" 400, "ital" 0;
-    }
-    100% {
-        font-variation-settings: "wdth" 89, "wght" 400, "ital" 100;
-    }
-}
-
 .note {
     font-size: 1rem;
     line-height: 1.3rem;
@@ -109,8 +69,54 @@ h1 {
     top: 0;
     left: 0;
     z-index: -1;
+    pointer-events: none;
 }
 
 #video {
     display: none;
+}
+
+.wide.highlighted,
+.wide:hover,
+.wide:focus {
+    animation: wide 500ms ease-in-out forwards;
+}
+
+.heavy.highlighted,
+.heavy:hover,
+.heavy:focus {
+    animation: heavy 500ms forwards;
+}
+
+.italic.highlighted,
+.italic:hover,
+.italic:focus {
+    animation: italic 500ms ease-in-out forwards;
+}
+
+@keyframes wide {
+    0% {
+        font-variation-settings: "wdth" 89, "wght" 400, "ital" 0;
+    }
+    100% {
+        font-variation-settings: "wdth" 200, "wght" 400, "ital" 0;
+    }
+}
+
+@keyframes heavy {
+    0% {
+        font-variation-settings: "wdth" 89, "wght" 400, "ital" 0;
+    }
+    100% {
+        font-variation-settings: "wdth" 89, "wght" 900, "ital" 0;
+    }
+}
+
+@keyframes italic {
+    0% {
+        font-variation-settings: "wdth" 89, "wght" 400, "ital" 0;
+    }
+    100% {
+        font-variation-settings: "wdth" 89, "wght" 400, "ital" 100;
+    }
 }
