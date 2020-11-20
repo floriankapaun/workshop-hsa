@@ -10,6 +10,14 @@ let drawCursorY = 0;
 let calcCursorX = 0;
 let calcCursorY = 0;
 
+// Geliehen von p5.js
+const mapRange = (value, a, b, c, d) => {
+    // first map value from (a..b) to (0..1)
+    value = (value - a) / (b - a);
+    // then map it from (0..1) to (c..d) and return it
+    return c + value * (d - c);
+}
+
 class HandposeDetection {
     constructor(input, output) {
         this.WINDOW_WIDTH = window.innerWidth;
@@ -80,11 +88,11 @@ class HandposeDetection {
         // Plott the input video as canvas background
         // Clip the image and position the clipped part on the canvas
         // ctx.drawImage(img,sx,sy,swidth,sheight,x,y,width,height)
-        this.ctx.drawImage(
-            this.input,
-            this.videoWidth - this.WINDOW_WIDTH, 0, this.WINDOW_WIDTH, this.WINDOW_HEIGHT,
-            0, 0, this.output.width, this.output.height,
-        );
+        // this.ctx.drawImage(
+        //     this.input,
+        //     this.videoWidth - this.WINDOW_WIDTH, 0, this.WINDOW_WIDTH, this.WINDOW_HEIGHT,
+        //     0, 0, this.output.width, this.output.height,
+        // );
         // Plott the prediction onto the context
         if (predictions.length > 0) {
             const firstHand = predictions[0];
@@ -92,7 +100,12 @@ class HandposeDetection {
                 && !firstHand.annotations.indexFinger
                 && !firstHand.annotations.indexFinger.length) return false;
             // For drawing
-            const pointer = firstHand.annotations.indexFinger[3];
+            let pointer = firstHand.annotations.indexFinger[3];
+
+            pointer = [
+                mapRange(pointer[0], (this.WINDOW_WIDTH - this.videoWidth), this.videoWidth, 0, this.WINDOW_WIDTH),
+                mapRange(pointer[1], 0, this.videoHeight, 0, this.WINDOW_HEIGHT),
+            ];
 
             let drawDifferenceX = pointer[0] - drawCursorX;
             let drawDifferenceY = pointer[1] - drawCursorY;
@@ -105,7 +118,7 @@ class HandposeDetection {
             this.ctx.arc(drawCursorX - (this.videoWidth - this.WINDOW_WIDTH), drawCursorY, 3 /* radius */, 0, 2 * Math.PI);
 
             // For calculations
-            const mirroredPointer = [
+            let mirroredPointer = [
                 this.WINDOW_WIDTH - pointer[0] + (this.videoWidth - this.WINDOW_WIDTH),
                 pointer[1],
             ];
@@ -173,6 +186,7 @@ const adjustFontPropertyFromDistance = (pointer) => {
     //     // font-variation-settings: "wdth" 89, "wght" 400
     // }
     const pointedElement = document.elementFromPoint(pointer[0], pointer[1]);
+    if (!pointedElement) return false;
     const indexOfPointedElement = parseInt(pointedElement.dataset.index);
     for (const span of spans) {
         span.style.fontVariationSettings = '"wdth" 89, "wght" 400, "ital" 0';
