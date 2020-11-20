@@ -4,6 +4,7 @@ const tf = import(/* webpackPreload: true */ '@tensorflow/tfjs-core');
 
 const video = document.getElementById('video');
 const canvas = document.getElementById('output');
+const cursor = document.getElementById('cursor');
 
 let drawCursorX = 0;
 let drawCursorY = 0;
@@ -114,8 +115,9 @@ class HandposeDetection {
             drawCursorY += (drawDifferenceY / 2);
 
             // Draw the cursor
-            this.ctx.beginPath();
-            this.ctx.arc(drawCursorX - (this.videoWidth - this.WINDOW_WIDTH), drawCursorY, 3 /* radius */, 0, 2 * Math.PI);
+            // this.ctx.beginPath();
+            // this.ctx.arc(drawCursorX - (this.videoWidth - this.WINDOW_WIDTH), drawCursorY, 3 /* radius */, 0, 2 * Math.PI);
+            // this.ctx.fill();
 
             // For calculations
             let mirroredPointer = [
@@ -129,8 +131,9 @@ class HandposeDetection {
             calcCursorX += (calcDifferenceX / 2);
             calcCursorY += (calcDifferenceY / 2);
 
+            cursor.style.transform = `translate(${calcCursorX}px, ${calcCursorY}px)`;
+
             adjustFontPropertyFromDistance([calcCursorX, calcCursorY]);
-            this.ctx.fill();
         }
         // Render the next prediction
         requestAnimationFrame(() => this.renderPrediction());
