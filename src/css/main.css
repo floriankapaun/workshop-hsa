@@ -17,7 +17,7 @@ body {
     position: relative;
     font-family: 'Flexa', sans-serif;
     font-size: 2rem;
-    font-size: 5vw;
+    font-size: 7vw;
     line-height: 1.2em;
     font-weight: 400;
     font-style: normal;
@@ -33,10 +33,11 @@ body {
 }
 
 h1 {
-    font-size: inherit;
+    font-size: 2.5rem;
+    line-height: 1em;
     font-variation-settings: "wdth" 89, "wght" 160, "ital" 0;
     margin-top: 0;
-    margin-bottom: 0;
+    margin-bottom: 2.5rem;
     font-weight: normal;
 }
 
@@ -76,21 +77,15 @@ h1 {
     display: none;
 }
 
-.wide.highlighted,
-.wide:hover,
-.wide:focus {
+.wide.highlighted {
     animation: wide 500ms ease-in-out forwards;
 }
 
-.heavy.highlighted,
-.heavy:hover,
-.heavy:focus {
+.heavy.highlighted {
     animation: heavy 500ms forwards;
 }
 
-.italic.highlighted,
-.italic:hover,
-.italic:focus {
+.italic.highlighted {
     animation: italic 500ms ease-in-out forwards;
 }
 

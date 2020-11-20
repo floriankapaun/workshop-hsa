@@ -6,11 +6,7 @@ const video = document.getElementById('video');
 const canvas = document.getElementById('output');
 const cursor = document.getElementById('cursor');
 
-const hightlights = {
-    wide: document.getElementsByClassName('wide'),
-    heavy: document.getElementsByClassName('heavy'),
-    italic: document.getElementsByClassName('italic'),
-}
+const highlights = document.getElementsByClassName('heavy');
 
 let cursorX = 0;
 let cursorY = 0;
@@ -130,6 +126,12 @@ const adjustFontPropertyFromDistance = (pointer) => {
     if (pointedElement.classList.contains('wide')
         || pointedElement.classList.contains('heavy')
         || pointedElement.classList.contains('italic')) {
+        const highlights = document.getElementsByClassName('highlighted');
+        for (const highlight of highlights) {
+            if (!highlight.isEqualNode(pointedElement)) {
+                highlight.classList.remove('highlighted');
+            }
+        }
         pointedElement.classList.add('highlighted');
     } else {
         const elems = document.getElementsByClassName('highlighted');
