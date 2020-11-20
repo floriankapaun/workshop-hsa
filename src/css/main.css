@@ -4,8 +4,8 @@
 
 :root {
     font-size: 115%;
-    --paper: #ffffff;
-    --ink: #ff0000;
+    --paper: #3E51FF;
+    --ink: #ffffff;
 }
 
 body {
@@ -34,6 +34,7 @@ h1 {
     font-size: inherit;
     font-variation-settings: "wdth" 89, "wght" 400, "ital" 100;
     margin-top: 0;
+    margin-bottom: 0;
     font-weight: normal;
 }
 
