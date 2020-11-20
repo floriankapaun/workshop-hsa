@@ -26,7 +26,7 @@ body {
     font-feature-settings: "kern" 1, "liga" 1, "onum" 1;
     color: var(--ink);
     background-color: var(--paper);
-    padding: 2rem;
+    padding: 2rem 2.3rem;
     margin: 0;
 }
 

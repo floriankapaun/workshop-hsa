@@ -5,6 +5,11 @@ const tf = import(/* webpackPreload: true */ '@tensorflow/tfjs-core');
 const video = document.getElementById('video');
 const canvas = document.getElementById('output');
 
+let drawCursorX = 0;
+let drawCursorY = 0;
+let calcCursorX = 0;
+let calcCursorY = 0;
+
 class HandposeDetection {
     constructor(input, output) {
         this.WINDOW_WIDTH = window.innerWidth;
@@ -37,7 +42,7 @@ class HandposeDetection {
         this.ctx = this.output.getContext('2d');
         this.ctx.translate(this.output.width, 0);
         this.ctx.scale(-1, 1);
-        this.ctx.fillStyle = '#32EEDB';
+        this.ctx.fillStyle = '#00ff00';
         // Setup tensorflow.js handpose model
         this.model = await (await handpose).load();
         // Start making predictions
@@ -86,14 +91,32 @@ class HandposeDetection {
             if (!firstHand.annotations
                 && !firstHand.annotations.indexFinger
                 && !firstHand.annotations.indexFinger.length) return false;
+            // For drawing
             const pointer = firstHand.annotations.indexFinger[3];
+
+            let drawDifferenceX = pointer[0] - drawCursorX;
+            let drawDifferenceY = pointer[1] - drawCursorY;
+
+            drawCursorX += (drawDifferenceX / 2);
+            drawCursorY += (drawDifferenceY / 2);
+
+            // Draw the cursor
             this.ctx.beginPath();
-            this.ctx.arc(pointer[0] - (this.videoWidth - this.WINDOW_WIDTH), pointer[1], 10 /* radius */, 0, 2 * Math.PI);
+            this.ctx.arc(drawCursorX - (this.videoWidth - this.WINDOW_WIDTH), drawCursorY, 3 /* radius */, 0, 2 * Math.PI);
+
+            // For calculations
             const mirroredPointer = [
                 this.WINDOW_WIDTH - pointer[0] + (this.videoWidth - this.WINDOW_WIDTH),
                 pointer[1],
             ];
-            adjustFontPropertyFromDistance(mirroredPointer);
+
+            let calcDifferenceX = mirroredPointer[0] - calcCursorX;
+            let calcDifferenceY = mirroredPointer[1] - calcCursorY;
+
+            calcCursorX += (calcDifferenceX / 2);
+            calcCursorY += (calcDifferenceY / 2);
+
+            adjustFontPropertyFromDistance([calcCursorX, calcCursorY]);
             this.ctx.fill();
         }
         // Render the next prediction
@@ -159,20 +182,30 @@ const adjustFontPropertyFromDistance = (pointer) => {
         if (pointedElement.parentNode.id === 'text') {
             const spansOfThisParagraph = document.getElementById('text').getElementsByTagName('SPAN');
             const wght = 400 + (500 / (i/2 + 1));
-            spansOfThisParagraph[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" 89, "wght" ${wght}, "ital" 0`;
-            spansOfThisParagraph[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" 89, "wght" ${wght}, "ital" 0`;
+            if (spansOfThisParagraph[indexOfPointedElement + i]) {
+                spansOfThisParagraph[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" 89, "wght" ${wght}, "ital" 0`;
+            }
+            if (spansOfThisParagraph[indexOfPointedElement - i]) {
+                spansOfThisParagraph[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" 89, "wght" ${wght}, "ital" 0`;
+            }
         } else if (pointedElement.parentNode.id === 'text2') {
             const spansOfThisParagraph = document.getElementById('text2').getElementsByTagName('SPAN');
             const italic = 100 / (i/2 + 1);
-            console.log(italic);
-            spansOfThisParagraph[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" 89, "wght" 400, "ital" ${italic}`;
-            spansOfThisParagraph[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" 89, "wght" 400, "ital" ${italic}`;
+            if (spansOfThisParagraph[indexOfPointedElement + i]) {
+                spansOfThisParagraph[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" 89, "wght" 400, "ital" ${italic}`;
+            }
+            if (spansOfThisParagraph[indexOfPointedElement - i]) {
+                spansOfThisParagraph[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" 89, "wght" 400, "ital" ${italic}`;
+            }
         } else if (pointedElement.parentNode.id === 'text3') {
             const spansOfThisParagraph = document.getElementById('text3').getElementsByTagName('SPAN');
             const width = 200 / (i/2 + 1);
-            console.log(width);
-            spansOfThisParagraph[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" ${width}, "wght" 400, "ital" 0`;
-            spansOfThisParagraph[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" ${width}, "wght" 400, "ital" 0`;
+            if (spansOfThisParagraph[indexOfPointedElement + i]) {
+                spansOfThisParagraph[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" ${width}, "wght" 400, "ital" 0`;
+            }
+            if (spansOfThisParagraph[indexOfPointedElement - i]) {
+                spansOfThisParagraph[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" ${width}, "wght" 400, "ital" 0`;
+            }
         }
     }
 };
