@@ -191,7 +191,6 @@ const adjustFontPropertyFromDistance = (pointer) => {
     for (const span of spans) {
         span.style.fontVariationSettings = '"wdth" 89, "wght" 400, "ital" 0';
         span.style.fontSize = '2rem';
-        span.style.lineHeight = '2.8rem';
     }
     if (!indexOfPointedElement) return false;
     for (let i = 0; i < 9; i++) {
@@ -219,17 +218,15 @@ const adjustFontPropertyFromDistance = (pointer) => {
         } else if (pointedElement.parentNode.id === 'text3') {
             const spansOfThisParagraph = document.getElementById('text3').getElementsByTagName('SPAN');
             const width = 200 / (i/5 + 1);
-            // const wght = 400 + (200 / (i/2 + 1));
             const fontSize = 1 + 3 / (i/2 + 1);
             if (spansOfThisParagraph[indexOfPointedElement + i]) {
                 spansOfThisParagraph[indexOfPointedElement + i].style.fontVariationSettings = `"wdth" ${width}, "wght" 400, "ital" 0`;
                 spansOfThisParagraph[indexOfPointedElement + i].style.fontSize = `${fontSize}em`;
-                spansOfThisParagraph[indexOfPointedElement + i].style.lineHeight = `${fontSize}em`;
+                spansOfThisParagraph[indexOfPointedElement + i].style.transform = `scale(${fontSize})`;
             }
             if (spansOfThisParagraph[indexOfPointedElement - i]) {
                 spansOfThisParagraph[indexOfPointedElement - i].style.fontVariationSettings = `"wdth" ${width}, "wght" 400, "ital" 0`;
-                spansOfThisParagraph[indexOfPointedElement - i].style.fontSize = `${fontSize}em`;
-                spansOfThisParagraph[indexOfPointedElement - i].style.lineHeight = `${fontSize}em`;
+                spansOfThisParagraph[indexOfPointedElement - i].style.transform = `scale(${fontSize})`;
             }
         }
     }
