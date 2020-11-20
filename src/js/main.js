@@ -142,7 +142,7 @@ class HandposeDetection {
 
 const handposeDetection = new HandposeDetection(video, canvas);
 
-handposeDetection.init();
+// handposeDetection.init();
 
 const hightlights = {
     wide: document.getElementsByClassName('wide'),

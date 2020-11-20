@@ -17,10 +17,11 @@ body {
     position: relative;
     font-family: 'Flexa', sans-serif;
     font-size: 2rem;
-    line-height: 2.8rem;
+    font-size: 5vw;
+    line-height: 1.2em;
     font-weight: 400;
     font-style: normal;
-    font-variation-settings: "wdth" 89, "wght" 400; /* "italic" 0 */
+    font-variation-settings: "wdth" 89, "wght" 160; /* "italic" 0 */
     -webkit-font-smoothing: antialiased;
     font-kerning: normal;
     font-feature-settings: "kern" 1, "liga" 1, "onum" 1;
@@ -32,10 +33,14 @@ body {
 
 h1 {
     font-size: inherit;
-    font-variation-settings: "wdth" 89, "wght" 400, "ital" 100;
+    font-variation-settings: "wdth" 89, "wght" 160, "ital" 0;
     margin-top: 0;
     margin-bottom: 0;
     font-weight: normal;
+}
+
+.font-style-bold {
+    font-variation-settings: "wdth" 89, "wght" 710, "ital" 0;
 }
 
 #cursor {
@@ -48,6 +53,7 @@ h1 {
     white-space: pre-wrap;
     margin-bottom: 0;
     margin-top: 0;
+    max-width: 25ch;
 }
 
 .wide.highlighted {
@@ -63,7 +69,9 @@ h1 {
     }
 }
 
-.heavy.highlighted {
+.heavy.highlighted,
+.heavy:hover,
+.heavy:focus {
     animation: heavy 500ms forwards;
 }
 
@@ -87,10 +95,6 @@ h1 {
     100% {
         font-variation-settings: "wdth" 89, "wght" 400, "ital" 100;
     }
-}
-
-.text span {
-    display: inline-block;
 }
 
 .note {
