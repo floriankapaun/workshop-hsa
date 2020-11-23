@@ -1,7 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = (env) => {
@@ -43,23 +42,19 @@ module.exports = (env) => {
         plugins: [
             new CleanWebpackPlugin(),
             new HtmlWebpackPlugin({
-                title: 'Team Finger',
+                title: 'HIGHLAIGHT',
                 template: 'src/index.handlebars',
                 templateParameters: {
-                    title: 'Team Finger',
+                    title: 'HIGHLAIGHT',
                 },
                 scriptLoading: 'defer',
                 hash: true,
-            }),
-            new CopyPlugin({
-                patterns: [
-                    { from: 'src/img/', to: 'img/' },
-                ],
             }),
         ],
         output: {
             filename: '[name].bundle.js',
             path: path.resolve(__dirname, 'dist'),
+            publicPath: '/',
         },
     };
 
